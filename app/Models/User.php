@@ -41,16 +41,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function isAdmin()
+    public function roles()
     {
-        if($this->role_id === 1)
-        { 
-            return true; 
-        } 
-        else 
-        { 
-            return false; 
-        }
+        return $this->belongsToMany(Role::class, 'role_users');
+    } 
+
+    public function hasRole($role) 
+    {
+        return $this->roles()->where('name', $role)->count() == 1;
     }
     
 }
