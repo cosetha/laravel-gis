@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lokasi;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Validator;
@@ -19,7 +20,9 @@ class LokasiController extends Controller
     public function index()
     {
         $lokasi = Lokasi::orderBy('created_at','desc')->get();
+        $one = Lokasi::first();
         return view('admin.lokasi.index',['lokasi' => $lokasi ]);
+        // print_r($one->kategoris->nama);
     }
 
     /**
@@ -29,7 +32,8 @@ class LokasiController extends Controller
      */
     public function create()
     {
-        return view('admin.lokasi.create');
+        $kategori = Kategori::orderBy('created_at','desc')->get();
+        return view('admin.lokasi.create',['kategori'=>$kategori]);
     }
 
     /**
@@ -49,7 +53,8 @@ class LokasiController extends Controller
             'gambar.required'=>'Field Gambar Perlu di Isi',
             'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
             'nama.required'=>'Field Nama Perlu di Isi',
-            'slug.unique'=>'Nama Lokasi telah di pakai'
+            'slug.unique'=>'Nama Lokasi telah di pakai',
+            'kategori.required'=>'Field Kategori Perlu di Isi'
         );
         $validator = Validator::make($request->all(),[
             'nama' => 'required',
@@ -58,6 +63,7 @@ class LokasiController extends Controller
             'lokasi' => 'required|',
             'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
             'slug' => 'unique:lokasi',
+            'kategori'=>'required',
             "keterangan" => 'required|string'],$messsages);
         if ($validator->fails()) {
             $error = $validator->errors();
@@ -74,6 +80,7 @@ class LokasiController extends Controller
                     $lokasi->nama = $request->nama;
                     $lokasi->long = $request->long;
                     $lokasi->lat = $request->lat;
+                    $lokasi->kategori_id = $request->kategori;
                     $lokasi->keterangan = $request->keterangan;
                     $lokasi->slug = Str::slug($request->nama,'-');
                     $lokasi->lokasi = $request->lokasi;
@@ -107,9 +114,9 @@ class LokasiController extends Controller
     public function edit($id)
     {
         $lokasi = Lokasi::where('id',$id)->first();
-        
+        $kategori = Kategori::orderBy('created_at','desc')->get();
         // print_r($lokasi);
-        return view('admin.lokasi.edit',['lokasi'=>$lokasi]);
+        return view('admin.lokasi.edit',['lokasi'=>$lokasi,'kategori'=>$kategori]);
     }
 
     /**
@@ -134,6 +141,7 @@ class LokasiController extends Controller
                     'gambar.required'=>'Field Gambar Perlu di Isi',
                     'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
                     'nama.required'=>'Field Nama Perlu di Isi',
+                    'kategori.required'=>'Field Kategori Perlu di Isi',
                     'slug.unique'=>'Nama Lokasi telah di pakai'
                 );
                 $validator = Validator::make($request->all(),[
@@ -141,8 +149,9 @@ class LokasiController extends Controller
                     'long' => 'required',
                     'lat' => 'required',
                     'lokasi' => 'required|',
-                    'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+                    'gambar' => 'mimes:jpeg,jpg,png,gif|max:10000|required',
                     'slug' => 'unique:lokasi',
+                    'kategori'=> 'required',
                     "keterangan" => 'required|string'],$messsages);
                 }else{
                     $messsages = array(
@@ -152,14 +161,16 @@ class LokasiController extends Controller
                         'lokasi.required'=>'Field Lokasi Perlu di Isi',
                         'gambar.required'=>'Field Gambar Perlu di Isi',
                         'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
+                        'kategori'=> 'Field Kategori Perlu di Isi',
                         'nama.required'=>'Field Nama Perlu di Isi',
                     );
                     $validator = Validator::make($request->all(),[
                         'nama' => 'required',
                         'long' => 'required',
                         'lat' => 'required',
+                        'kategori'=> 'required',
                         'lokasi' => 'required|',
-                        'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:10000',                        
+                        'gambar' => 'mimes:jpeg,jpg,png,gif|max:10000|required',                        
                         "keterangan" => 'required|string'],$messsages);
                 }
             if ($validator->fails()) {
@@ -178,6 +189,7 @@ class LokasiController extends Controller
                     $lokasi->nama = $request->nama;
                     $lokasi->long = $request->long;
                     $lokasi->lat = $request->lat;
+                    $lokasi->kategori_id = $request->kategori;
                     $lokasi->keterangan = $request->keterangan;
                     $lokasi->slug = Str::slug($request->nama,'-');
                     $lokasi->lokasi = $request->lokasi;
@@ -186,17 +198,14 @@ class LokasiController extends Controller
                     return redirect('/dashboard/lokasi/edit/'.$request->id)->with(['success' => ' Berhasil Mengedit Lokasi '.$lokasi->nama]);
              }
         }else{
-
             if($lokasi->slug != $request['slug'] ){
-
                 $messsages = array(
                     'keterangan.required'=>'Field Keterangan Perlu di Isi',
                     'long.required'=>'Field Longitude Perlu di Isi',
                     'lat.required'=>'Field Latitude Perlu di Isi',
                     'lokasi.required'=>'Field Lokasi Perlu di Isi',
-                    'gambar.required'=>'Field Gambar Perlu di Isi',
-                    'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
                     'nama.required'=>'Field Nama Perlu di Isi',
+                    'kategori.required'=>'Field Kategori Perlu di Isi',
                     'slug.unique'=>'Nama Lokasi telah di pakai'
                 );
                 $validator = Validator::make($request->all(),[
@@ -204,7 +213,7 @@ class LokasiController extends Controller
                     'long' => 'required',
                     'lat' => 'required',
                     'lokasi' => 'required|',
-                    'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:10000',
+                    'kategori'=> 'required',
                     'slug' => 'unique:lokasi',
                     "keterangan" => 'required|string'],$messsages);
                 }else{
@@ -212,14 +221,16 @@ class LokasiController extends Controller
                         'keterangan.required'=>'Field Keterangan Perlu di Isi',
                         'long.required'=>'Field Longitude Perlu di Isi',
                         'lat.required'=>'Field Latitude Perlu di Isi',
-                        'lokasi.required'=>'Field Lokasi Perlu di Isi',                    
+                        'lokasi.required'=>'Field Lokasi Perlu di Isi', 
+                        'kategori'=> 'Field Kategori Perlu di Isi',                   
                         'nama.required'=>'Field Nama Perlu di Isi',
                     );
                     $validator = Validator::make($request->all(),[
                         'nama' => 'required',
                         'long' => 'required',
                         'lat' => 'required',
-                        'lokasi' => 'required|',                                             
+                        'lokasi' => 'required|', 
+                        'kategori'=> 'required',                                            
                         "keterangan" => 'required|string'],$messsages);
                 }
             if ($validator->fails()) {
@@ -230,6 +241,7 @@ class LokasiController extends Controller
                     $lokasi->long = $request->long;
                     $lokasi->lat = $request->lat;
                     $lokasi->keterangan = $request->keterangan;
+                    $lokasi->kategori_id = $request->kategori;
                     $lokasi->slug = Str::slug($request->nama,'-');
                     $lokasi->lokasi = $request->lokasi;                    
                     $lokasi->save();                                    

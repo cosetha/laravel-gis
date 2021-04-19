@@ -59,6 +59,11 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
+                                    <select class="custom-select custom-select-lg mb-2" name="kategori" id="kategori">                                      
+                                        @foreach($kategori as $category)
+                                        <option value="{{ $category->id }}" {{$lokasi->kategori_id == $category->id ? 'selected' : '' }}>{{ $category->nama }}</option>
+                                        @endforeach
+                                    </select>
                                     <label for="file" class="mt-2 mr-4 mb-3">Gambar</label>
                                     <input input id="file" type="file" name="gambar" accept="image/*" onchange="readURLa(this);" aria-describedby="inputGroupFileAddon01">
                                     <script>

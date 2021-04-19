@@ -90,8 +90,8 @@
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="{{ url('dashboard/lokasi') }}">Lokasi</a>
-                                            <a class="nav-link" href="{{ url('dashboard/lokasi') }}">Galeri</a>
-                                            
+                                            <a class="nav-link" href="{{ url('dashboard/galeri') }}">Galeri</a>
+                                            <a class="nav-link" href="{{ url('dashboard/kategori') }}">Kategori</a>
                                         </nav>
                                     </div>
                                 </nav>

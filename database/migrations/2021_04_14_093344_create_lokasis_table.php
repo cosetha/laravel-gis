@@ -22,6 +22,8 @@ class CreateLokasisTable extends Migration
             $table->string('lat');
             $table->text('keterangan');
             $table->string('slug')->unique();
+            $table->unsignedBigInteger('kategori_id');                 
+            $table->foreign('kategori_id')->references('id')->on('kategori')->onDelete('cascade');
             $table->timestamps();
         });
     }

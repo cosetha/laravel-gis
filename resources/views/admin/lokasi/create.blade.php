@@ -18,7 +18,7 @@
                             <button type="button" class="close" data-dismiss="alert">×</button>	
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li class="m-0 p-1">{{ $error }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -57,6 +57,14 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
+                                    
+                                    <select class="custom-select custom-select-lg mb-2" name="kategori" id="kategori">
+                                        <option value="" selected>Open this select menu</option>
+                                        @foreach($kategori as $category)
+                                        <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    
                                     <label for="file" class="mt-2 mr-4 mb-3">Gambar</label>
                                     <input input id="file" type="file" name="gambar" accept="image/*" onchange="readURLa(this);" aria-describedby="inputGroupFileAddon01">
                                     <script>

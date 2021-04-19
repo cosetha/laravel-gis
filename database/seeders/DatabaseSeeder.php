@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(RoleSeeder::class);
+        $this->call(GaleriSeeder::class);
         $this->call(UsersTableSeeder::class);
         $roles = \App\Models\Role::all();
         \App\Models\User::All()->each(function ($user) use ($roles){
