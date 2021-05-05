@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         if (request()->user()->hasRole('user')) {
-            return view('user.index');
+            return view('home');
         } else {
             return redirect('/');
         } 

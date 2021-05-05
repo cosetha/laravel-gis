@@ -13,8 +13,15 @@ class CreateBeritasTable extends Migration
      */
     public function up()
     {
-        Schema::create('beritas', function (Blueprint $table) {
+        Schema::create('berita', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
+            $table->string('deskripsi');
+            $table->string('gambar');
+            $table->string('slug')->unique();
+            $table->unsignedBigInteger('user_id');                 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('headline', ['on', 'off']);
             $table->timestamps();
         });
     }

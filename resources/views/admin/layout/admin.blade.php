@@ -109,10 +109,9 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Berita / Event</a>
-                                            <a class="nav-link" href="register.html">Headline</a>
-                                            <a class="nav-link" href="password.html">Sekilas Kota</a>
-                                            <a class="nav-link" href="password.html">FeedBack</a>
+                                            <a class="nav-link" href="{{ url('dashboard/berita') }}">Berita</a>
+                                            <a class="nav-link" href="{{ url('dashboard/profil') }}">Profil</a>
+                                            <a class="nav-link" href="{{ url('dashboard/feedback') }}">FeedBack</a>
                                         </nav>
                                     </div>
                                     
@@ -143,12 +142,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>                            
                         </div>
                     </div>
                 </footer>

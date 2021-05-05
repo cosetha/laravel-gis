@@ -25,11 +25,9 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ml-auto">
-                        
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#about">About</a></li>
+                    <ul class="navbar-nav ml-auto">                                               
                         <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#projects">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#signup">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#signup">Contact</a></li>                        
 						
                         @guest
                             @if (Route::has('login'))
@@ -53,6 +51,11 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                    @if(Auth::user()->hasRole('admin'))
+                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                       Dashboard
+                                    </a>
+                                    @endif
                                 </div>
                             </li>
                         @endguest

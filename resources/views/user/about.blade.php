@@ -2,81 +2,38 @@
 @section('title', 'GIS-Kediri')
 @section('content')
 <!-- Masthead-->
-
-<style>
-hr.hr-text {
-  position: relative;
-    border: none;
-    height: 1px;
-    background: #64a19d;
-}
-
-hr.hr-text::before {
-    content: attr(data-content);
-    display: inline-block;
-    background: #fff;
-    font-weight: bold;
-    font-size: 0.85rem;
-    color: #212529;
-    border-radius: 30rem;
-    padding: 0.2rem 2rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-</style>
-<header class="masthead">
+        <header class="masthead" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%), url('../../asset/assets/img/bg-masthead.jpg');">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
-                    <h1 class="mx-auto my-0 text-uppercase">GIS KEDIRI</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
-                    <a class="btn btn-primary js-scroll-trigger" href="{{url('about')}}">Get Started</a>
+                    <h1 class="mx-auto my-0 text-uppercase">About Us</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam eligendi adipisci ipsum ullam laborum obcaecati veniam nostrum voluptatibus mollitia deserunt.</h2>
+                    <a class="btn btn-primary js-scroll-trigger" href="#about">Get Started</a>
                 </div>
             </div>
         </header>
         
         <!-- Projects-->
         <section class="projects-section bg-light" id="projects">
-        
             <div class="container">
-            <hr data-content="HEADLINE" class="hr-text my-2 p-1 text-primary-60">
                 <!-- Featured Project Row-->
-                @if(empty($berita->count()))
                 <div class="row align-items-center no-gutters mb-4 mb-lg-5">
                     <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="{{ url('') }}/asset/assets/img/bg-masthead.jpg" alt="" /></div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="featured-text text-center text-lg-left">
-                            <h4>Lorem ipsum dolor sit amet.</h4>
-                            <p class="text-black-50 mb-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quibusdam incidunt porro sit omnis repudiandae, nisi maxime molestiae!</p>
+                            <h4>Shoreline</h4>
+                            <p class="text-black-50 mb-0">Grayscale is open source and MIT licensed. This means you can use it for any project - even commercial projects! Download it, customize it, and publish your website!</p>
                         </div>
                     </div>
                 </div>
-                @else
-                  
-                <div class="row align-items-center no-gutters mb-4 mb-lg-5">
-                    <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="{{ asset($berita[0]['gambar']) }} " /></div>
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="featured-text text-center text-lg-left">
-                            <h4>{{ Str::limit($berita[0]['judul'], 30) }}</h4>
-                            <p class="text-black-50 mb-0">{!!Str::limit($berita[0]['deskripsi'], 50) !!}</p>
-                            <a class="mb-0 text-primary-50" href="{{url('berita/detail').'/'. $berita[0]['slug'] }}">read more</a>
-                            <hr class="d-none d-lg-block mb-0 ml-0" />
-                        </div>
-                       
-                    </div>
-                </div>
-                <hr data-content="Locations" class="hr-text my-2 p-1 text-primary-60">
-                @endif
-                @if(empty($lokasi->count()))<!-- Project One Row-->
+                <!-- Project One Row-->
                 <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
                     <div class="col-lg-6"><img class="img-fluid" src="{{ url('') }}/asset/assets/img/demo-image-01.jpg" alt="" /></div>
                     <div class="col-lg-6">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-left">
-                                    <h4 class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae, iste!</h4>
-                                    <p class="mb-0 text-white-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, veritatis sint maiores reiciendis voluptates totam accusamus ad ipsum?</p>
+                                    <h4 class="text-white">Misty</h4>
+                                    <p class="mb-0 text-white-50">An example of where you can put an image of a project, or anything else, along with a description.</p>
                                     <hr class="d-none d-lg-block mb-0 ml-0" />
                                 </div>
                             </div>
@@ -90,8 +47,8 @@ hr.hr-text::before {
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <h4 class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati, delectus.</h4>
-                                    <p class="mb-0 text-white-50">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita, asperiores debitis! Fugit illo accusantium, minima nulla dignissimos aperiam iste reprehenderit!</p>
+                                    <h4 class="text-white">Mountains</h4>
+                                    <p class="mb-0 text-white-50">Another example of a project with its respective description. These sections work well responsively as well, try this theme on a small screen!</p>
                                     <hr class="d-none d-lg-block mb-0 mr-0" />
                                 </div>
                             </div>
@@ -99,41 +56,18 @@ hr.hr-text::before {
                     </div>
                 </div>
             </div>
-            @else
-                @foreach($lokasi as $l)
-                <div class="row justify-content-center no-gutters">
-                    <div class="col-lg-6"><img class="img-fluid" src="{{ asset($l->gambar) }}" alt="" /></div>
-                    <div class="col-lg-6 @if($loop->iteration % 2 ==0 ) order-lg-first @endif">
-                        <div class="bg-black text-center h-100 project">
-                            <div class="d-flex h-100">
-                                <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <h4 class="text-white">{{ Str::limit($l->nama, 30) }}</h4>
-                                    <p class="mb-0 text-white-50">{{ Str::limit($l->lokasi, 30) }}</p>
-                                    <hr class="d-none d-lg-block mb-0 mr-0" />
-                                    <small class="text-white">{{ $l->kategoris->first()->nama }}</small>
-                                    <a class="mb-0 d-block text-primary-50" href="{{url('lokasi/detail').'/'. $berita[0]['slug'] }}">read more</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            @endif
         </section>
         <!-- Signup-->
         <section class="signup-section" id="signup">
             <div class="container">
-                <div class="row">                       
+                <div class="row">
                     <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    @if(Auth::user()->hasRole('user'))
                         <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-                        <h2 class="text-white mb-5">Isi Form untuk FeedBack</h2>
+                        <h2 class="text-white mb-5">Subscribe to receive updates!</h2>
                         <form class="form-inline d-flex">
-                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="text" placeholder="Isi Masukan..." />
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" placeholder="Enter email address..." />
                             <button class="btn btn-primary mx-auto" type="submit">Subscribe</button>
                         </form>
-                    @endif
-                        
                     </div>
                 </div>
             </div>

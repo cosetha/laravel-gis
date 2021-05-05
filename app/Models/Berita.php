@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Berita extends Model
 {
     use HasFactory;
-    protected $table = "kategori";
+    protected $table = "berita";
     protected $guarded = ['id'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class,'id','user_id');
+    }
 }

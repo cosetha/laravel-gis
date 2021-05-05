@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Lokasi;
+use App\Models\Berita;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +16,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $lokasi = Lokasi::inRandomOrder()->limit(2)->get();
+    $berita = Berita::where('headline','on')->get();
+    // print_r($berita);
+    return view('home',['lokasi' => $lokasi,'berita' => $berita ]);
+});
+
+Route::get('/about', function () {
+    return view('user.about');
 });
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+
+Route::get('/user/home', [App\Http\Controllers\UserController::class, 'index'])->name('user');
 
 Route::namespace('Settings')
     ->middleware(['auth'])
@@ -57,6 +68,14 @@ Route::prefix('dashboard')
         Route::get('/galeri/edit/{id}', [App\Http\Controllers\GaleriController::class, 'edit']);
         Route::get('/galeri/delete/{id}', [App\Http\Controllers\GaleriController::class, 'destroy']);
         Route::post('/galeri/store', [App\Http\Controllers\GaleriController::class, 'store']);
+
+        Route::get('/berita', [App\Http\Controllers\BeritaController::class, 'index']);
+        Route::get('/berita/create', [App\Http\Controllers\BeritaController::class, 'create']);
+        Route::post('/berita/update', [App\Http\Controllers\BeritaController::class, 'update']);
+        Route::get('/berita/edit/{id}', [App\Http\Controllers\BeritaController::class, 'edit']);
+        Route::get('/berita/delete/{id}', [App\Http\Controllers\BeritaController::class, 'destroy']);
+        Route::post('/berita/store', [App\Http\Controllers\BeritaController::class, 'store']);
+
 
         
     });

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Lokasi;
+use App\Models\Berita;
+use DB;
 class HomeController extends Controller
 {
     /**
@@ -24,12 +26,19 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->hasRole('user')) {
-            return redirect('user');
+            return redirect('user/home');
         }
 
         if ($request->user()->hasRole('admin')){
             return redirect('dashboard/home');
         }
         
+    }
+    public function home()
+    {
+        $lokasi = Lokasi::inRandomOrder()->limit(2)->get();
+        $berita = Berita::where('headline','on')->orderBy('id','desc')->first();
+
+        return view('home',['lokasi' => $lokasi,'berita' => $berita ]);
     }
 }
