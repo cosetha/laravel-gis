@@ -1,3 +1,4 @@
+$(document).ready(function(){
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
@@ -7,9 +8,9 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+    labels: [],
     datasets: [{
-      label: "Sessions",
+      label: "Jumlah",
       lineTension: 0.3,
       backgroundColor: "rgba(2,117,216,0.2)",
       borderColor: "rgba(2,117,216,1)",
@@ -20,7 +21,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBackgroundColor: "rgba(2,117,216,1)",
       pointHitRadius: 50,
       pointBorderWidth: 2,
-      data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+      data: [],
     }],
   },
   options: {
@@ -33,14 +34,13 @@ var myLineChart = new Chart(ctx, {
           display: false
         },
         ticks: {
-          maxTicksLimit: 7
+          maxTicksLimit: 5
         }
       }],
       yAxes: [{
         ticks: {
-          min: 0,
-          max: 40000,
-          maxTicksLimit: 5
+          beginAtZero:true,
+          maxTicksLimit: 4
         },
         gridLines: {
           color: "rgba(0, 0, 0, .125)",
@@ -51,4 +51,20 @@ var myLineChart = new Chart(ctx, {
       display: false
     }
   }
+});
+
+
+  function ajax_chart(chart) {
+    var label;
+    var data;
+    $.get('/data-kategori', function(response){
+     
+        chart.data.labels = response.labels;
+        for (let index = 0; index < response.data.length; index++) {
+          chart.data.datasets[0].data = response.data;          
+        }     
+        chart.update(); // finally update our chart
+    });
+}
+ajax_chart(myLineChart);
 });

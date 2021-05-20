@@ -16,6 +16,11 @@ class Lokasi extends Model
         return $this->hasMany(Kategori::class,'id','kategori_id');
     }
 
+    public function favorit()
+    {
+        return $this->belongsToMany(User::class, 'tabel_favorit','user_id','lokasi_id');
+    }
+
     public function galeries()
     {
         return $this->belongsToMany(Galeri::class, 'galeri_lokasi');

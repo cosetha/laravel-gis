@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Validator;
 Use Str;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
+use DB; 
 
 class LokasiController extends Controller
 {
@@ -277,6 +278,12 @@ class LokasiController extends Controller
         return view('datatable.tableLokasi');
     }
 
+    public function getDataLokasi()
+    {
+        $lokasi = Lokasi::orderBy('created_at','desc')->with('kategoris')->get();
+        return response()->json(['data' => $lokasi]);
+    }
+
     public function LoadDataLokasi(){
         $data = Lokasi::orderBy('id','desc')->get();
 
@@ -296,4 +303,21 @@ class LokasiController extends Controller
          ->rawColumns(['aksi'])
             ->make(true);
     }
+
+    public function DataKategori()
+    {
+        $lokasi = DB::table('lokasi') ->join('kategori', 'lokasi.kategori_id', '=', 'kategori.id')->select('kategori.nama', \DB::raw("count(*) as total"))->groupBy('kategori.nama')->get();
+        $label = array();
+        $data = array ();
+        foreach ($lokasi as $key => $value) {
+            $label[] = $value->nama;
+            $data[] = $value->total;
+        }
+        return response()->json([
+            "labels" => $label,
+            "data" => $data,
+        ]);
+        
+    }
+    
 }

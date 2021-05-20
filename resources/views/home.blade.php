@@ -25,12 +25,18 @@ hr.hr-text::before {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+h4,h5,h6{
+    font-family: 'Lato', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+}
+
 </style>
 <header class="masthead">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
                     <h1 class="mx-auto my-0 text-uppercase">GIS KEDIRI</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam, enim?</h2>
                     <a class="btn btn-primary js-scroll-trigger" href="{{url('about')}}">Get Started</a>
                 </div>
             </div>
@@ -60,7 +66,7 @@ hr.hr-text::before {
                         <div class="featured-text text-center text-lg-left">
                             <h4>{{ Str::limit($berita[0]['judul'], 30) }}</h4>
                             <p class="text-black-50 mb-0">{!!Str::limit($berita[0]['deskripsi'], 50) !!}</p>
-                            <a class="mb-0 text-primary-50" href="{{url('berita/detail').'/'. $berita[0]['slug'] }}">read more</a>
+                            <a class="mb-0 text-primary-50" href="{{url('berita/detail').'/'. $berita[0]['slug'] }}">Read More</a>
                             <hr class="d-none d-lg-block mb-0 ml-0" />
                         </div>
                        
@@ -111,7 +117,7 @@ hr.hr-text::before {
                                     <p class="mb-0 text-white-50">{{ Str::limit($l->lokasi, 30) }}</p>
                                     <hr class="d-none d-lg-block mb-0 mr-0" />
                                     <small class="text-white">{{ $l->kategoris->first()->nama }}</small>
-                                    <a class="mb-0 d-block text-primary-50" href="{{url('lokasi/detail').'/'. $berita[0]['slug'] }}">read more</a>
+                                    <a class="mb-0 d-block text-primary-50" href="{{url('lokasi/detail').'/'. $l['slug'] }}">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +131,7 @@ hr.hr-text::before {
             <div class="container">
                 <div class="row">                       
                     <div class="col-md-10 col-lg-8 mx-auto text-center">
-                    @if(Auth::user()->hasRole('user'))
+                    @if(Auth::user())
                         <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
                         <h2 class="text-white mb-5">Isi Form untuk FeedBack</h2>
                         <form class="form-inline d-flex">
@@ -136,12 +142,14 @@ hr.hr-text::before {
                         
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- Contact-->
-        <section class="contact-section bg-black">
-            <div class="container">
-                <div class="row">
+                <div class="row w-100 mt-5">
+                    <div class="col-md-12">
+                        <div id="map" class="map w-100" style=" height: 500px;" >
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5 p-4">
                     <div class="col-md-4 mb-3 mb-md-0">
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
@@ -179,5 +187,33 @@ hr.hr-text::before {
                     <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
                 </div>
             </div>
-        </section>
+        </section>       
+@endsection
+@section('script')
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,100&family=Montserrat:wght@300&display=swap" rel="stylesheet">
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoieGlhb2thbmciLCJhIjoiY2lqc2d2NXlyMGhkbHU0bTVtcGNiOWxseCJ9.J5qsX13KKNT1slMGS-MOLg';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [112.01120512940906, -7.823820147958699],
+    zoom: 14.15
+});
+$(document).ready(function(){
+    $.get('/post-data', function(data){
+       
+        var result = data.data;
+        for (let index = 0; index < result.length; index++) {
+            var popup = new mapboxgl.Popup().setHTML(
+                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="lokasi/detail/'+result[index].slug+'" class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-cicle"></i> </a>'
+            );
+
+             new mapboxgl.Marker().setLngLat([result[index].long, result[index].lat])
+            .setPopup(popup).addTo(map);
+            console.log(result[index].long)
+        }
+  });
+});
+</script>
 @endsection

@@ -50,5 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->roles()->where('name', $role)->count() == 1;
     }
+
+    public function favorit()
+    {
+        return $this->belongsToMany(Lokasi::class, 'tabel_favorit','user_id','lokasi_id');
+    }
     
 }

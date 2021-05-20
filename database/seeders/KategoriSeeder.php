@@ -13,6 +13,17 @@ class KategoriSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('kategori')->insert([
+            'nama' => 'Wisata Alam',
+            'gambar' => 'default.jpg'            
+        ]);
+        DB::table('kategori')->insert([
+            'nama' => 'Wisata Kuliner', 
+            'gambar' => 'default.jpg'             
+        ]);
+        DB::table('kategori')->insert([
+            'nama' => 'Wisata Budaya',  
+            'gambar' => 'default.jpg'            
+        ]);
     }
 }

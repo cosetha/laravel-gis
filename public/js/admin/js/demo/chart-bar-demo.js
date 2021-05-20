@@ -7,12 +7,12 @@ var ctx = document.getElementById("myBarChart");
 var myLineChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: [],
     datasets: [{
-      label: "Revenue",
+      label: "Jumlah",
       backgroundColor: "rgba(2,117,216,1)",
       borderColor: "rgba(2,117,216,1)",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data:[],
     }],
   },
   options: {
@@ -25,14 +25,13 @@ var myLineChart = new Chart(ctx, {
           display: false
         },
         ticks: {
-          maxTicksLimit: 6
+          maxTicksLimit: 5
         }
       }],
       yAxes: [{
         ticks: {
-          min: 0,
-          max: 15000,
-          maxTicksLimit: 5
+          min: 0,  
+          maxTicksLimit: 4        
         },
         gridLines: {
           display: true
@@ -44,3 +43,16 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+function ajax_chart(chart) {
+  var label;
+  var data;
+  $.get('/data-total', function(response){
+   
+      chart.data.labels = response.labels;
+      for (let index = 0; index < response.data.length; index++) {
+        chart.data.datasets[0].data = response.data;          
+      }     
+      chart.update(); // finally update our chart
+  });
+}
+ajax_chart(myLineChart);

@@ -19,7 +19,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand js-scroll-trigger" href="#page-top">GIS Kediri</a>
+                <a class="navbar-brand js-scroll-trigger" href="{{url('/')}}">GIS Kediri</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -27,7 +27,8 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">                                               
                         <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#projects">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#signup">Contact</a></li>                        
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="#signup">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger " href="{{url('post')}}">Posts</a></li>                               
 						
                         @guest
                             @if (Route::has('login'))
@@ -74,6 +75,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{ asset('js/js/scripts.js') }}"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+        
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
         @yield('script')
     </body>
 </html>

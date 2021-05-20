@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Lokasi;
 use App\Models\Berita;
-
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,15 +22,41 @@ Route::get('/', function () {
     return view('home',['lokasi' => $lokasi,'berita' => $berita ]);
 });
 
+Route::get('/{field}/detail/{slug}', function ($field,$slug) {
+    if($field =='lokasi'){
+        $lokasi = Lokasi::inRandomOrder()->limit(2)->get();       
+        $detail = Lokasi::where('slug',$slug)->with('kategoris','galeries')->get();
+
+        return view('user.lokasiDetail',['lokasi' => $lokasi,'detail'=>$detail  ]);
+    }else if($field == 'berita'){
+        $lokasi = Lokasi::inRandomOrder()->limit(2)->get();
+        $berita = Berita::inRandomOrder()->limit(3)->get();
+        $detail = Berita::where('slug',$slug)->with('users')->get();
+
+        return view('user.beritaDetail',['lokasi' => $lokasi,'berita' => $berita, 'detail'=>$detail  ]);
+    }else{
+        abort(404);
+    }
+});
+
 Route::get('/about', function () {
     return view('user.about');
 });
 
+Route::get('/post', function () {
+    $lokasi = Lokasi::paginate(5);
+    $berita = Berita::inRandomOrder()->limit(2)->get();
+ 
+    return view('user.post',['lokasi' => $lokasi,'berita' => $berita ]);
+});
+Route::get('/post-data',[App\Http\Controllers\LokasiController::class, 'getDataLokasi' ]);
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/user/home', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+Route::get('/data-kategori', [App\Http\Controllers\LokasiController::class, 'DataKategori']);
+Route::get('/data-total', [App\Http\Controllers\DashboardController::class, 'DataTotal']);
 
 Route::namespace('Settings')
     ->middleware(['auth'])
@@ -76,6 +102,8 @@ Route::prefix('dashboard')
         Route::get('/berita/delete/{id}', [App\Http\Controllers\BeritaController::class, 'destroy']);
         Route::post('/berita/store', [App\Http\Controllers\BeritaController::class, 'store']);
 
+        Route::get('/feedback', [App\Http\Controllers\FeedBackController::class, 'index']);
+        Route::get('/feedback/add', [App\Http\Controllers\FeedBackController::class, 'store']);
 
         
     });

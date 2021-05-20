@@ -2,6 +2,19 @@
 @section('title', 'Dashboard-Admin')
 
 @section('content')
+<style>
+.badge:after{
+content:attr(value);
+font-size:12px;
+background: red;
+border-radius:50%;
+padding:3px;
+position:relative;
+left:-8px;
+top:-10px;
+opacity:0.9;
+}
+</style>
                 <div class="container-fluid">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
@@ -10,37 +23,37 @@
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
+                                    <div class="card-body">Lokasi</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <a class="small text-white stretched-link" href="{{url('dashboard/lokasi')}}">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i> {{ $jumlah['lokasi'] }} </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
+                                    <div class="card-body">Kategori</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <a class="small text-white stretched-link" href="{{url('dashboard/kategori')}}">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i>{{ $jumlah['kategori'] }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
+                                    <div class="card-body">User</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <a class="small text-white stretched-link" href="{{url('dashboard/feedback')}}">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i>{{ $jumlah['user'] }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
+                                    <div class="card-body">Berita</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <a class="small text-white stretched-link" href="{{url('dashboard/berita')}}">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i>{{ $jumlah['berita'] }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -50,7 +63,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-area mr-1"></i>
-                                        Area Chart Example
+                                       Diagram Jumlah Lokasi berdasarkan Kategori
                                     </div>
                                     <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
                                 </div>
@@ -59,94 +72,49 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar mr-1"></i>
-                                        Bar Chart Example
+                                        Diagram Total Data Sesuai Tabel
                                     </div>
                                     <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table mr-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Position</th>
-                                                <th>Office</th>
-                                                <th>Age</th>
-                                                <th>Start date</th>
-                                                <th>Salary</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>                                                                        
-                                            <tr>
-                                                <td>Hermione Butler</td>
-                                                <td>Regional Director</td>
-                                                <td>London</td>
-                                                <td>47</td>
-                                                <td>2011/03/21</td>
-                                                <td>$356,250</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Lael Greer</td>
-                                                <td>Systems Administrator</td>
-                                                <td>London</td>
-                                                <td>21</td>
-                                                <td>2009/02/27</td>
-                                                <td>$103,500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jonas Alexander</td>
-                                                <td>Developer</td>
-                                                <td>San Francisco</td>
-                                                <td>30</td>
-                                                <td>2010/07/14</td>
-                                                <td>$86,500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Shad Decker</td>
-                                                <td>Regional Director</td>
-                                                <td>Edinburgh</td>
-                                                <td>51</td>
-                                                <td>2008/11/13</td>
-                                                <td>$183,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Michael Bruce</td>
-                                                <td>Javascript Developer</td>
-                                                <td>Singapore</td>
-                                                <td>29</td>
-                                                <td>2011/06/27</td>
-                                                <td>$183,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Donna Snider</td>
-                                                <td>Customer Support</td>
-                                                <td>New York</td>
-                                                <td>27</td>
-                                                <td>2011/01/25</td>
-                                                <td>$112,000</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                        <div class="row text-center d-flex justify-content-center">
+                            <div class="col-md-8">
+                            <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-map mr-1"></i>
+                                       Peta Persebaran
+                                    </div>
+                                    <div class="card-body">  <div id="map" style="min-height:430px"></div></div>
                                 </div>
+                              
                             </div>
                         </div>
                     </div>
              
+@endsection
+@section('js-ajax')
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoieGlhb2thbmciLCJhIjoiY2lqc2d2NXlyMGhkbHU0bTVtcGNiOWxseCJ9.J5qsX13KKNT1slMGS-MOLg';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [112.01120512940906, -7.823820147958699],
+    zoom: 14.15
+});
+$(document).ready(function(){
+    $.get('/post-data', function(data){
+       
+        var result = data.data;
+        for (let index = 0; index < result.length; index++) {
+            var popup = new mapboxgl.Popup().setHTML(
+                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="lokasi/detail/'+result[index].slug+'" class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-cicle"></i> </a>'
+            );
+
+             new mapboxgl.Marker().setLngLat([result[index].long, result[index].lat])
+            .setPopup(popup).addTo(map);         
+        }
+  });
+});
+</script>
 @endsection

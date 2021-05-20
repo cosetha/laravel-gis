@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>GIS-Kediri About</title>
+        <title>GIS-Kediri Detail </title>
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
@@ -62,29 +62,57 @@
                 </div>
             </div>
         </nav>
-        <header class="masthead" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%), url('../../asset/assets/img/bg-masthead.jpg');">
+        <header class="masthead" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%), url('../../{{ $detail[0]->gambar }}');">
             <div class="container d-flex h-100 align-items-center">
                 <div class="mx-auto text-center">
-                    <h1 class="mx-auto my-0 text-uppercase">About Us</h1>
-                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam eligendi adipisci ipsum ullam laborum obcaecati veniam nostrum voluptatibus mollitia deserunt.</h2>
-                    <a class="btn btn-primary js-scroll-trigger" href="#about">Get Started</a>
+                    <h1 class="mx-auto my-0 text-uppercase">{{ $detail[0]->judul }}</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">{{ date('F j, Y, g:i a', strtotime($detail[0]->created_at)) }}</h2>
+                    <a class="btn btn-primary js-scroll-trigger" href="#detail">Detail</a>
                 </div>
             </div>
         </header>
         
 
-        <section class="bg-light projects-section">
+        <section class="bg-light projects-section" id="detail">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-8">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur?</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>
+                        <p>{!! $detail[0]->deskripsi !!}</p>
+                        <small>Posted by: {{$detail[0]->users[0]->name}}</small>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur?</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>
+                    <div class="row">
+                        <div class="alert alert-dark w-100" role="alert">
+                            <h5 class="text-center" >Other <span class="badge bg-light ">News</span> check it out! </h5>
+                        </div>
+                                @if(empty($berita->count()))                            
+                                    <div class="col-md-12 col-lg-12 mx-auto">
+                                        <div class="media">
+                                            <img class="align-self-start mr-3" src="{{asset('asset/default.png')}}" width="64" height="64" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <a href="" class="nav-link p-0">                                   
+                                                <h4 class="mt-0">Top-aligned media</h4>
+                                                </a>
+                                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi ipsam dignissimos tempora consequuntur ipsa illum.</p>                       
+                                            </div>
+                                        </div>
+                                    </div> 
+                                @else
+                                @foreach($berita as $b)
+                                    <div class="col-md-12 col-lg-12 mx-auto my-2">
+                                        <div class="media">
+                                            <img class="align-self-start mr-3" src="{{asset($b->gambar)}}" width="64" height="64" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                            <h4>{{ Str::limit($b->judul, 40) }}</h4>
+                                            <p class="text-black-50 mb-0">{!!Str::limit($b->deskripsi, 50) !!}</p>
+                                            <a class="mb-0 text-primary-50 nav-link" href="{{url('berita/detail').'/'. $b->slug }}">Read More</a>
+                                            <hr class="d-none d-lg-block mb-0 ml-0" />                   
+                                            </div>
+                                        </div>
+                                    </div> 
+                            @endforeach
+                            @endif                               
+                            </div>
                     </div>
                 </div>
             </div>
