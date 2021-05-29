@@ -33,6 +33,22 @@
                                         <input type="text" class="form-control" id="lokasiTempat" placeholder="Masukan Nama Kategori" name="nama" required value = "{{$kategori['nama']}}">
                                        
                                 </div>
+                                 <input input id="file" type="file" name="gambar" accept="image/*" onchange="readURLa(this);" aria-describedby="inputGroupFileAddon01">
+                                    <script>
+                                        function readURLa(input) {
+                                            if (input.files && input.files[0]) {
+                                                var reader = new FileReader();
+
+                                                reader.onload = function(e) {
+                                                $('#blah').attr('src', e.target.result);
+                                                }
+
+                                                reader.readAsDataURL(input.files[0]); // convert to base64 string
+                                            }
+                                            }
+                                        </script>
+
+                                    <img id="blah" class = "rounded mx-auto d-block" height="200px" src="@if($kategori['gambar'] != null ){{ url('') }}/{{$kategori['gambar']}}@else {{ url('') }}/asset/default.png @endif" alt="your image" />
                                 <button type="submit" class="btn btn-primary mb-2">Update</button>                                                                                
                             </div>
                                 </form>

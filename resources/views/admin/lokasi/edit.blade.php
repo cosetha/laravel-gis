@@ -59,6 +59,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
+                                    <label for="kategori">Kategori</label>
                                     <select class="custom-select custom-select-lg mb-2" name="kategori" id="kategori">                                      
                                         @foreach($kategori as $category)
                                         <option value="{{ $category->id }}" {{$lokasi->kategori_id == $category->id ? 'selected' : '' }}>{{ $category->nama }}</option>

@@ -13,7 +13,7 @@ class CreateFeedBacksTable extends Migration
      */
     public function up()
     {
-        Schema::create('feed_backs', function (Blueprint $table) {
+        Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
             $table->text('feedbacks');
@@ -28,6 +28,6 @@ class CreateFeedBacksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feed_backs');
+        Schema::dropIfExists('feedback');
     }
 }

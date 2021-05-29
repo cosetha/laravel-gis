@@ -40,10 +40,10 @@ hr.hr-text::before {
         
         <section class="bg-light projects-section" id="projects">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-8">
+                <div class="row mx-auto justify-content-center">
+                    <div class="col-lg-12 col-md-12">
                        <div class="row">
-                       @if(empty($lokasi->count()))
+                       @if(empty($lokasi))
                         <div class="col-md-12 col-lg-12 mx-auto">
                             <div class="media">
                                 <img class="align-self-start mr-3" src="{{asset('asset/default.png')}}" width="128" height="128" alt="Generic placeholder image">
@@ -58,59 +58,23 @@ hr.hr-text::before {
                         </div>
                         @else
                         @foreach($lokasi as $l)
-                        <div class="col-md-12 col-lg-12 mx-auto my-2">
-                            <div class="media">
-                                <img class="align-self-start mr-3" src="{{asset($l->gambar)}}" width="128" height="128" alt="Generic placeholder image">
-                                    <div class="media-body">
-                                        <h4 class="text-dark">{{ Str::limit($l->nama, 30) }} <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
-                                        <p class="mb-0 text-dark-50">{{ Str::limit($l->lokasi, 30) }}</p>
-                                        <hr class="d-none d-lg-block mb-0 mr-0" />
-                                        <small class="text-dark">{{ $l->kategoris->first()->nama}}</small>
-                                        <a class="mb-0 d-block text-primary-50" href="{{url('lokasi/detail').'/'. $l->slug }}">read more</a>
-                                    </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card" style="">
+                                <img class="card-img-top" src="{{ asset($l->gambar) }}" alt="{{ asset($l->nama) }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{Str::limit($l->nama, 30)}} <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h5>
+                                    <p class="card-text">{!! Str::limit($l->keterangan, 60) !!}</p>
+                                    <small>{{ $l->kategoris->first()->nama }}</small>
+                                    <a class="mb-0 d-block text-primary-50" href="{{url('lokasi/detail').'/'. $l['slug'] }}">Read More</a>
+                                </div>
                             </div>
                         </div>
-                        @endforeach
+                        @endforeach                       
                         @endif
-                        {{$lokasi->links("pagination::bootstrap-4")}}                                                                      
+                        </div>
+                                                                                       
                     </div>           
-                </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="row">
-                            <div class="alert alert-dark w-100" role="alert">
-                                <h5 class="text-center" >Other <span class="badge bg-light ">News</span> check it out! </h5>
-                            </div>
-                                @if(empty($berita->count()))                            
-                                    <div class="col-md-12 col-lg-12 mx-auto">
-                                        <div class="media">
-                                            <img class="align-self-start mr-3" src="{{asset('asset/default.png')}}" width="64" height="64" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <a href="" class="nav-link p-0">                                   
-                                                <h4 class="mt-0">Top-aligned media</h4>
-                                                </a>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam, enim?
-                                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi ipsam dignissimos tempora consequuntur ipsa illum.</p>                       
-                                            </div>
-                                        </div>
-                                    </div> 
-                                @else
-                                @foreach($berita as $b)
-                                    <div class="col-md-12 col-lg-12 mx-auto my-2">
-                                        <div class="media">
-                                            <img class="align-self-start mr-3" src="{{asset($b->gambar)}}" width="64" height="64" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                            <h4>{{ Str::limit($b->judul, 40) }}</h4>
-                                            <p class="text-black-50 mb-0">{!!Str::limit($b->deskripsi, 50) !!}</p>
-                                            <a class="mb-0 text-primary-50 nav-link" href="{{url('berita/detail').'/'. $b->slug }}">Read More</a>
-                                            <hr class="d-none d-lg-block mb-0 ml-0" />                   
-                                            </div>
-                                        </div>
-                                    </div> 
-                            @endforeach
-                            @endif                               
-                            </div>
-                        </div>                       
-                    </div>
-                </div>
+                </div>                                                                          
             </div>
             <hr class="d-none d-lg-block mb-0 mr-0" />
         </section>

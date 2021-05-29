@@ -13,14 +13,6 @@ class GaleriSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('kategori')->insert([
-            'nama' => 'Wisata Alam',            
-        ]);
-        DB::table('kategori')->insert([
-            'nama' => 'Wisata Kuliner',            
-        ]);
-        DB::table('kategori')->insert([
-            'nama' => 'Wisata Budaya',            
-        ]);
+        
     }
 }

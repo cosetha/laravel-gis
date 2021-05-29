@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FeedBack;
+use App\Models\Feed;
 use Illuminate\Http\Request;
+use Validator;
 
 class FeedBackController extends Controller
 {
@@ -14,7 +15,8 @@ class FeedBackController extends Controller
      */
     public function index()
     {
-        //
+        $galeri = Feed::orderBy('created_at','desc')->get();
+        return view('admin.feedback.index',['feedback' => $galeri ]);
     }
 
     /**
@@ -35,7 +37,13 @@ class FeedBackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+             
+            $feedBack = new Feed();
+            $feedBack->feedbacks = $request->feedback;
+            $feedBack->nama = $request->nama;
+            $feedBack->save();          
+            return back()->with('jsAlert', 'Sukses Mengirim Feedback');
+         
     }
 
     /**
@@ -78,8 +86,19 @@ class FeedBackController extends Controller
      * @param  \App\Models\FeedBack  $feedBack
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FeedBack $feedBack)
+    public function destroy($id)
     {
-        //
+        try {
+            $feedBack = Feed::find($id);                    
+            $feedBack->delete();
+            return response()->json([
+                "message" => "Success"
+            ]);
+            //code...
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

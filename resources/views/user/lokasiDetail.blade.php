@@ -86,7 +86,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-8">
-                        <h4>{!! $detail[0]->nama !!}</h4>
+                        <h4>{!! $detail[0]->nama !!} <div class="favorite d-inline">@if($detail[0]->favorited()) <a  class="favorite-remove " href="#favorite-remove" data-id="{{$detail[0]->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#add-favorite" data-id="{{$detail[0]->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
                         <hr>
                         <h5>Lokasi: <span class="badge bg-primary">{!! $detail[0]->lokasi !!} </span></h5>
                         <p>{!! $detail[0]->keterangan !!}</p>
@@ -97,7 +97,7 @@
                         <div class="card-header text-center my-3"><i class="fas fa-images mr-1"></i>Galleri Foto</div>                    
                         <div class="row d-flex flex-nowrap overflow-auto">
                          
-                        @if(empty($detail[0]->galeries->count()))                      
+                        @if(count($detail[0]->galeries) < 1)                      
                             <div class="col-md-6">
                                 <img src="{{asset('asset/default.png')}}" alt="" class="img-fluid">
                             </div>
@@ -145,7 +145,7 @@
                 </div>
 
                 <div class="row justify-content-between my-5">
-                @if(empty($lokasi->count()))
+                @if(count($lokasi) < 1)
                     <div class="col-6">
                         <div class="card" style="">
                             <img class="card-img-top" src="..." alt="Card image cap">
@@ -229,6 +229,8 @@
         </section>
         <p id="long_or" class="d-none"></p>
         <p id="lat_or" class="d-none"></p>
+           
+    </body>
         <!-- Footer-->
         <footer class="footer bg-black small text-center text-white-50"><div class="container">Copyright © Your Website 2020</div></footer>
         <!-- Bootstrap core JS-->
@@ -238,7 +240,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{ asset('js/js/scripts.js') }}"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.2/dist/sweetalert2.all.min.js"></script>
         <script>
         $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
@@ -296,5 +298,99 @@
         });
         
         </script>       
-    </body>
+
+    <script>
+    $(document).ready(function () {
+
+        $('.favorite-add').click(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Daftar Favorit',
+                text: 'Tambahkan ke Daftar Favorit ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        accepts: 'application/json',
+                        type: 'get',
+                        url: "/favorite-add/"+ $(this).data('id'),
+                        success: function(response) {
+                            if (response.hasOwnProperty('error')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Ooopss...',
+                                    text: response.error,
+                                    timer: 1200,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.message,
+                                    text: 'Berhasil Menambahkan ke Favorit',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                            location.reload();
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            });
+        
+        });
+        
+        $('.favorite-remove').click(function(e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Daftar Favorit',
+                text: 'Hapus dari Daftar Favorit ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        accepts: 'application/json',
+                        type: 'get',
+                        url: "/favorite-remove/"+ $(this).data('id'),
+                        success: function(response) {
+                            if (response.hasOwnProperty('error')) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Ooopss...',
+                                    text: response.error,
+                                    timer: 1200,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: response.message,
+                                    text: 'Berhasil Mengahpus dari daftar Favorit',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                            location.reload();
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            });
+        
+        });
+    });
+    </script>
 </html>

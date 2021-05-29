@@ -6,6 +6,7 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Validator;
+use Illuminate\Support\Facades\File;
 
 class KategoriController extends Controller
 {
@@ -40,17 +41,28 @@ class KategoriController extends Controller
     {
         
         $messsages = array(            
-            'nama.required'=>'Field Nama Perlu di Isi',           
+            'nama.required'=>'Field Nama Perlu di Isi',
+            'gambar.required'=>'Field Gambar Perlu di Isi',
+            'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
+            'gambar.max'=>'Max ukuran gambar 8mb',           
         );
         $validator = Validator::make($request->all(),[
-            'nama' => 'required'],$messsages
+            'nama' => 'required',
+            'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:8000',
+        ],$messsages
         );
         if ($validator->fails()) {
             $error = $validator->errors();
             return back()->withInput()->withErrors($error);
          }else{
+            $directory = 'assets/upload/thumbnail';
+            $file = request()->file('gambar');
+            $nama = time().$file->getClientOriginalName();
+            $file->name = $nama;
+            $file->move($directory, $file->name);
             $kategori = new Kategori();
             $kategori->nama = $request->nama;
+            $kategori->gambar= $directory."/".$nama;
             $kategori->save();
             return redirect('/dashboard/kategori/create')->with(['success' => ' Berhasil menambahkan Kategori '.$kategori->nama]);
          }
@@ -87,23 +99,57 @@ class KategoriController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
-    {
-        $messsages = array(            
-            'nama.required'=>'Field Nama Perlu di Isi',           
-        );
-        $validator = Validator::make($request->all(),[
-            'nama' => 'required'],$messsages
-        );
-        if ($validator->fails()) {
-            $error = $validator->errors();
-            return back()->withInput()->withErrors($error);
-         }else{
-            $kategori = Kategori::find($request->id);
-            $old = $kategori->nama;
-            $kategori->nama = $request->nama;
-            $kategori->save();
-            return redirect('/dashboard/kategori/edit/'.$request->id)->with(['success' => ' Berhasil Mengedit Kategori '.$old.' menjadi '.$kategori->nama]);
-         }
+    {       
+        if($request->hasFile('gambar')){
+            $messsages = array(            
+                'nama.required'=>'Field Nama Perlu di Isi',
+                'gambar.required'=>'Field Gambar Perlu di Isi',
+                'gambar.mimes'=>'Field Gambar Perlu di Isi dengan Format: jpeg,jpg,png',
+                'gambar.max'=>'Max ukuran gambar 8mb',           
+            );
+            $validator = Validator::make($request->all(),[
+                'nama' => 'required',
+                'gambar' => 'mimes:jpeg,jpg,png,gif|required|max:8000',
+            ],$messsages
+            );
+            if ($validator->fails()) {
+                $error = $validator->errors();
+                return back()->withInput()->withErrors($error);
+             }else{
+                $directory = 'assets/upload/thumbnail';
+                $file = request()->file('gambar');
+                $nama = time().$file->getClientOriginalName();
+                $file->name = $nama;
+                $file->move($directory, $file->name);            
+                $image_path = url('/').$kategori->gambar;                 
+                File::Delete($kategori->gambar);
+
+                $kategori = Kategori::find($request->id);
+                $old = $kategori->nama;
+                $kategori->nama = $request->nama;
+                $kategori->gambar= $directory."/".$nama;
+                $kategori->save();
+                return redirect('/dashboard/kategori/edit/'.$request->id)->with(['success' => ' Berhasil Mengedit Kategori '.$old.' menjadi '.$kategori->nama]);
+             }
+        }else{
+            $messsages = array(            
+                'nama.required'=>'Field Nama Perlu di Isi',           
+            );
+            $validator = Validator::make($request->all(),[
+                'nama' => 'required'],$messsages
+            );
+            if ($validator->fails()) {
+                $error = $validator->errors();
+                return back()->withInput()->withErrors($error);
+             }else{                   
+                $kategori = Kategori::find($request->id);
+                $old = $kategori->nama;
+                $kategori->nama = $request->nama;               
+                $kategori->save();
+                return redirect('/dashboard/kategori/edit/'.$request->id)->with(['success' => ' Berhasil Mengedit Kategori '.$old.' menjadi '.$kategori->nama]);                
+             }
+        }
+         
     }
 
     /**
@@ -115,7 +161,8 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         try {
-            $kategori = Kategori::find($id);          
+            $kategori = Kategori::find($id);
+            File::Delete($kategori->gambar);          
             $kategori->delete();
             return response()->json([
                 "message" => "Success"

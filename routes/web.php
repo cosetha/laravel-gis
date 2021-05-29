@@ -22,6 +22,10 @@ Route::get('/', function () {
     return view('home',['lokasi' => $lokasi,'berita' => $berita ]);
 });
 
+Route::get('favorite-add/{id}', [App\Http\Controllers\LokasiController::class, 'favoritePost'])->middleware('auth');
+Route::get('favorite-remove/{id}', [App\Http\Controllers\LokasiController::class, 'unFavoritePost'])->middleware('auth');
+Route::get('my-favorite', [App\Http\Controllers\LokasiController::class, 'myFavorites'])->middleware('auth');
+
 Route::get('/{field}/detail/{slug}', function ($field,$slug) {
     if($field =='lokasi'){
         $lokasi = Lokasi::inRandomOrder()->limit(2)->get();       
@@ -58,11 +62,6 @@ Route::get('/user/home', [App\Http\Controllers\UserController::class, 'index'])-
 Route::get('/data-kategori', [App\Http\Controllers\LokasiController::class, 'DataKategori']);
 Route::get('/data-total', [App\Http\Controllers\DashboardController::class, 'DataTotal']);
 
-Route::namespace('Settings')
-    ->middleware(['auth'])
-    ->group(function () {
-        Route::get('/settings/ssh/create', 'SSHController@create')->middleware('password.confirm');
-    });
 
 Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -80,6 +79,7 @@ Route::prefix('dashboard')
         Route::get('/lokasi/edit/{id}', [App\Http\Controllers\LokasiController::class, 'edit']);
         Route::get('/lokasi/delete/{id}', [App\Http\Controllers\LokasiController::class, 'destroy']);
         Route::post('/lokasi/store', [App\Http\Controllers\LokasiController::class, 'store']);
+        Route::get('/lokasi/show/{id}', [App\Http\Controllers\LokasiController::class, 'show']);
 
         Route::get('/kategori', [App\Http\Controllers\KategoriController::class, 'index']);
         Route::get('/kategori/create', [App\Http\Controllers\KategoriController::class, 'create']);
@@ -101,12 +101,14 @@ Route::prefix('dashboard')
         Route::get('/berita/edit/{id}', [App\Http\Controllers\BeritaController::class, 'edit']);
         Route::get('/berita/delete/{id}', [App\Http\Controllers\BeritaController::class, 'destroy']);
         Route::post('/berita/store', [App\Http\Controllers\BeritaController::class, 'store']);
+        Route::get('/berita/show/{id}', [App\Http\Controllers\BeritaController::class, 'show']);
+      
 
-        Route::get('/feedback', [App\Http\Controllers\FeedBackController::class, 'index']);
-        Route::get('/feedback/add', [App\Http\Controllers\FeedBackController::class, 'store']);
-
-        
     });
+
+    Route::get('/dashboard/feedback', [App\Http\Controllers\FeedBackController::class, 'index'])->middleware('auth');
+    Route::post('/feedback/add', [App\Http\Controllers\FeedBackController::class, 'store'])->middleware('auth');
+    Route::get('/dashboard/feedback/delete/{id}', [App\Http\Controllers\FeedBackController::class, 'destroy'])->middleware('auth');
 
     Route::prefix('load')
     ->group(function () {

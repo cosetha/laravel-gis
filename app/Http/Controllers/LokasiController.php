@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\URL;
 use Validator;
 Use Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 use DB; 
 
 class LokasiController extends Controller
@@ -101,9 +102,12 @@ class LokasiController extends Controller
      * @param  \App\Models\Lokasi  $lokasi
      * @return \Illuminate\Http\Response
      */
-    public function show(Lokasi $lokasi)
+    public function show($id)
     {
-        return view('admin.lokasi.show');
+        $lokasi = Lokasi::where('id',$id)->first();
+        $kategori = Kategori::orderBy('created_at','desc')->get();
+        // print_r($lokasi);
+        return view('admin.lokasi.show',['lokasi'=>$lokasi,'kategori'=>$kategori]);
     }
 
     /**
@@ -319,5 +323,43 @@ class LokasiController extends Controller
         ]);
         
     }
-    
+
+    public function favoritePost($id)
+    {
+        try {
+            Auth::user()->favorit()->attach(Lokasi::where('id', $id)->first());
+            return response()->json([
+                "message" => "Success"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+        
+
+        return back();
+    }
+
+    public function unFavoritePost($id)
+    {
+        try {
+            Auth::user()->favorit()->detach($id);
+            return response()->json([
+                "message" => "Success"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+       
+    }
+
+    public function myFavorites()
+    {
+        $lokasi = Auth::user()->favorit;
+        return view('user.favorite', ['lokasi'=> $lokasi]);
+    }
+        
 }

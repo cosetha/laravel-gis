@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function favorit()
     {
-        return $this->belongsToMany(Lokasi::class, 'tabel_favorit','user_id','lokasi_id');
+        return $this->belongsToMany(Lokasi::class, 'tabel_favorit');
     }
     
 }

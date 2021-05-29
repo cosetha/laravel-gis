@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="form-check">
-                                    
+                                    <label for="kategori">Kategori</label>
                                     <select class="custom-select custom-select-lg mb-2" name="kategori" id="kategori">
                                         <option value="" selected>Open this select menu</option>
                                         @foreach($kategori as $category)

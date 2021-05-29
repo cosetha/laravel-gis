@@ -30,7 +30,17 @@ h4,h5,h6{
     font-family: 'Lato', sans-serif;
     font-family: 'Montserrat', sans-serif;
 }
+.marker{
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius:50%;
+    cursor:pointer;
+}
 
+.fa-heart:hover {
+    color: red;
+}
 </style>
 <header class="masthead">
             <div class="container d-flex h-100 align-items-center">
@@ -48,7 +58,7 @@ h4,h5,h6{
             <div class="container">
             <hr data-content="HEADLINE" class="hr-text my-2 p-1 text-primary-60">
                 <!-- Featured Project Row-->
-                @if(empty($berita->count()))
+                @if(count($berita) < 1)
                 <div class="row align-items-center no-gutters mb-4 mb-lg-5">
                     <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="{{ url('') }}/asset/assets/img/bg-masthead.jpg" alt="" /></div>
                     <div class="col-xl-4 col-lg-5">
@@ -59,22 +69,26 @@ h4,h5,h6{
                     </div>
                 </div>
                 @else
-                  
+                
+                @foreach($berita as $b)                  
                 <div class="row align-items-center no-gutters mb-4 mb-lg-5">
                     <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="{{ asset($berita[0]['gambar']) }} " /></div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="featured-text text-center text-lg-left">
-                            <h4>{{ Str::limit($berita[0]['judul'], 30) }}</h4>
-                            <p class="text-black-50 mb-0">{!!Str::limit($berita[0]['deskripsi'], 50) !!}</p>
-                            <a class="mb-0 text-primary-50" href="{{url('berita/detail').'/'. $berita[0]['slug'] }}">Read More</a>
+                            <h4>{{ Str::limit($b->judul, 30) }}</h4>
+                            <p class="text-black-50 mb-0">{!!Str::limit($b->deskripsu, 50) !!}</p>
+                            <a class="mb-0 text-primary-50" href="{{url('berita/detail').'/'. $b->slug }}">Read More</a>
                             <hr class="d-none d-lg-block mb-0 ml-0" />
                         </div>
                        
                     </div>
                 </div>
+                @endforeach
                 <hr data-content="Locations" class="hr-text my-2 p-1 text-primary-60">
                 @endif
-                @if(empty($lokasi->count()))<!-- Project One Row-->
+
+                
+                @if(count($lokasi) < 1)<!-- Project One Row-->
                 <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
                     <div class="col-lg-6"><img class="img-fluid" src="{{ url('') }}/asset/assets/img/demo-image-01.jpg" alt="" /></div>
                     <div class="col-lg-6">
@@ -113,7 +127,7 @@ h4,h5,h6{
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <h4 class="text-white">{{ Str::limit($l->nama, 30) }}</h4>
+                                    <h4 class="text-white">{{ Str::limit($l->nama, 30) }}  <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
                                     <p class="mb-0 text-white-50">{{ Str::limit($l->lokasi, 30) }}</p>
                                     <hr class="d-none d-lg-block mb-0 mr-0" />
                                     <small class="text-white">{{ $l->kategoris->first()->nama }}</small>
@@ -134,10 +148,18 @@ h4,h5,h6{
                     @if(Auth::user())
                         <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
                         <h2 class="text-white mb-5">Isi Form untuk FeedBack</h2>
-                        <form class="form-inline d-flex">
-                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="text" placeholder="Isi Masukan..." />
-                            <button class="btn btn-primary mx-auto" type="submit">Subscribe</button>
+                        <form class="form-inline d-flex" action="{{url('feedback/add')}}" method="post">
+                            @csrf
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="feedback" name="feedback" type="text" placeholder="Isi Masukan..." />
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0 d-none" id="nama" name="nama" type="hidden" value="{{ Auth::user()->name }}" />
+                            <button class="btn btn-primary mx-auto" type="submit">Submit</button>
                         </form>
+                    @else
+                        <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                        <h2 class="text-white mb-5">Daftar sekarang untuk benefit lainnya</h2>
+                        <div class="d-flex">
+                        <a href="{{url('register')}}" class="btn btn-primary mx-auto" type="submit">Register</a>
+                        </div>
                     @endif
                         
                     </div>
@@ -189,7 +211,14 @@ h4,h5,h6{
             </div>
         </section>       
 @endsection
+
 @section('script')
+
+@if(session()->has('jsAlert'))
+    <script>
+        alert("{{ session()->get('jsAlert') }}");
+    </script>
+@endif 
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,100&family=Montserrat:wght@300&display=swap" rel="stylesheet">
 <script>
@@ -208,12 +237,118 @@ $(document).ready(function(){
             var popup = new mapboxgl.Popup().setHTML(
                 '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="lokasi/detail/'+result[index].slug+'" class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-cicle"></i> </a>'
             );
+                
+            var el = document.createElement('div');
+            if(result[index].kategoris[0].gambar !=null){
+                el.style.backgroundImage = 'url(/' + result[index].kategoris[0].gambar + ')';               
+            }else{
+                el.style.backgroundImage = 'url(/asset/default.png)';          
+            }
+          
+            el.className = 'marker';
+            el.style.width = '40px';
+            el.style.height = '40px';
 
-             new mapboxgl.Marker().setLngLat([result[index].long, result[index].lat])
+             new mapboxgl.Marker(el).setLngLat([result[index].long, result[index].lat])
             .setPopup(popup).addTo(map);
             console.log(result[index].long)
         }
   });
+});
+</script>
+
+<script>
+  $(document).ready(function () {
+
+    $('.favorite-add').click(function(e){
+        e.preventDefault();
+        Swal.fire({
+			title: 'Daftar Favorit',
+			text: 'Tambahkan ke Daftar Favorit ?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ya'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					accepts: 'application/json',
+					type: 'get',
+                    url: "/favorite-add/"+ $(this).data('id'),
+					success: function(response) {
+						if (response.hasOwnProperty('error')) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Ooopss...',
+								text: response.error,
+								timer: 1200,
+								showConfirmButton: false
+							});
+						} else {
+							Swal.fire({
+								icon: 'success',
+								title: response.message,
+								text: 'Berhasil Menambahkan ke Favorit',
+								timer: 2000,
+								showConfirmButton: false
+							});
+						}
+						location.reload();
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});
+			}
+		});
+    
+    });
+    
+    $('.favorite-remove').click(function(e){
+        e.preventDefault();
+        Swal.fire({
+			title: 'Daftar Favorit',
+			text: 'Hapus dari Daftar Favorit ?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Ya'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					accepts: 'application/json',
+					type: 'get',
+                    url: "/favorite-remove/"+ $(this).data('id'),
+					success: function(response) {
+						if (response.hasOwnProperty('error')) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Ooopss...',
+								text: response.error,
+								timer: 1200,
+								showConfirmButton: false
+							});
+						} else {
+							Swal.fire({
+								icon: 'success',
+								title: response.message,
+								text: 'Berhasil Mengahpus dari daftar Favorit',
+								timer: 2000,
+								showConfirmButton: false
+							});
+						}
+						location.reload();
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});
+			}
+		});
+    
+    });
 });
 </script>
 @endsection

@@ -5,17 +5,15 @@
                 <div class="container-fluid">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Halaman kategori</li>
+                            <li class="breadcrumb-item active">Halaman feedback</li>
                         </ol>
                         
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table mr-1"></i>
-                                Tabel kategori
+                                Tabel FeedBack
                             </div>
                             <div class="d-sm-flex align-items-center mt-3">
-                                <a class="btn btn-primary ml-2" href="{{ url('dashboard/kategori/create') }}" >+
-                                    Tambah kategori</a>
                             </div>
                             
                             <div class="card-body">
@@ -24,36 +22,32 @@
                                         <thead>
                                             <tr class="text-center">
                                                 <th>No</th>
-                                                <th>Nama Kategori</th>
-                                                <th>Gambar</th>   
+                                                <th>Nama Feedback</th>
+                                                <th>FeedBack</th>   
                                                 <th>Action</th>                                          
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr class="text-center">
                                                 <th>No</th>
-                                                <th>Nama Kategori</th>
-                                                <th>Gambar</th>                                                
+                                                <th>Nama </th>
+                                                <th>FeedBack</th>                                                
                                                 <th>Action</th>    
                                             </tr>
                                         </tfoot>
                                         <tbody>                                                                        
-                                        @foreach($kategori as $l)
+                                        @foreach($feedback as $l)
                                             <tr>
                                                 <td class="text-center" >{{ $loop->iteration }}</td>                                              
                                                 <td>{{ $l->nama }}</td> 
-                                                <td> <img src="@if($l->gambar != null ){{ url('') }}/{{$l->gambar}}@else {{ url('') }}/asset/default.png @endif" alt="{{ $l->nama }}" class = "thumbnail rounded mx-auto d-block" height="160px"> </td>                                                                                             
-                                                <td>
-                                                
-                                                <a href="{{ url('') }}/dashboard/kategori/edit/{{$l->id}}" data-id="'{{$l->id}}'" data-nama="{{$l->nama}}" class="btn-edit" style="font-size: 18pt; text-decoration: none;" class="mr-3">
-                                                    <i class="fas fa-pen-square"></i>
-                                                </a>
-                                                    
-                                                <a href="javascript:void(0)" data-id="{{$l->id}}'" data-nama="{{$l->nama}}" class="btn-delete" style="font-size: 18pt; text-decoration: none; color:red;">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
+                                                <td>{{ $l->feedbacks}}</td> 
 
+                                                <td>
+                                                    <a href="javascript:void(0)" data-id="{{$l->id}}'" data-nama="{{$l->feedbacks}}" class="btn-delete" style="font-size: 18pt; text-decoration: none; color:red;">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
                                                 </td>
+
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -87,7 +81,7 @@ $(".btn-delete").click(function(e) {
 				$.ajax({
 					accepts: 'application/json',
 					type: 'get',
-					url: '/dashboard/kategori/delete/' + id,
+					url: '/dashboard/feedback/delete/' + id ,
 					success: function(response) {
 						if (response.hasOwnProperty('error')) {
 							Swal.fire({
@@ -101,7 +95,7 @@ $(".btn-delete").click(function(e) {
 							Swal.fire({
 								icon: 'success',
 								title: response.message,
-								text: 'Berhasil Menghapus kategori' + nama,
+								text: 'Berhasil Menghapus feedback' + nama,
 								timer: 2000,
 								showConfirmButton: false
 							});
@@ -109,7 +103,7 @@ $(".btn-delete").click(function(e) {
 						location.reload();
 					},
 					error: function(err) {
-						console.log(err);
+						// console.log(err);
 					}
 				});
 			}

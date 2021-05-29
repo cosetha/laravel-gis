@@ -65,6 +65,9 @@
                                                     <a href="javascript:void(0)" data-id="{{$l->id}}'" data-judul="{{$l->judul}}" class="btn-delete" style="font-size: 18pt; text-decoration: none; color:red;">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
+                                                    <a href="{{ url('') }}/dashboard/berita/show/{{$l->id}}" data-id="{{$l->id}}'" data-nama="{{$l->nama}}" class="btn-show" style="font-size: 18pt; text-decoration: none; color:green;">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 </td>
                                             </tr>
                                         @endforeach

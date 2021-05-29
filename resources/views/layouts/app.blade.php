@@ -6,7 +6,6 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>@yield('title')</title>
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -56,6 +55,13 @@
                                     <a class="dropdown-item" href="{{ route('home') }}">
                                        Dashboard
                                     </a>
+                                    <a class="dropdown-item" href="{{ url('my-favorite') }}">
+                                       My Favorite
+                                    </a>
+                                    @else
+                                    <a class="dropdown-item" href="{{ url('my-favorite') }}">
+                                       My Favorite
+                                    </a>
                                     @endif
                                 </div>
                             </li>
@@ -78,6 +84,7 @@
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
         
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.2/dist/sweetalert2.all.min.js"></script>
         @yield('script')
     </body>
 </html>
