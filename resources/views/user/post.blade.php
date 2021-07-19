@@ -62,7 +62,7 @@ hr.hr-text::before {
                             <div class="media">
                                 <img class="align-self-start mr-3" src="{{asset($l->gambar)}}" width="128" height="128" alt="Generic placeholder image">
                                     <div class="media-body">
-                                        <h4 class="text-dark">{{ Str::limit($l->nama, 30) }} <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
+                                        <h4 class="text-dark">{{ Str::limit($l->nama, 30) }} @auth<div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div>@endauth</h4>
                                         <p class="mb-0 text-dark-50">{{ Str::limit($l->lokasi, 30) }}</p>
                                         <hr class="d-none d-lg-block mb-0 mr-0" />
                                         <small class="text-dark">{{ $l->kategoris->first()->nama}}</small>
@@ -117,14 +117,14 @@ hr.hr-text::before {
         <!-- Contact-->
         <section class="signup-section bg-black" id="signup">
             <div class="container">
-                <div class="row">
+            <div class="row">
                     <div class="col-md-4 mb-3 mb-md-0">
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-map-marked-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Address</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                                <div class="small text-black-50">Jalan Kota Kediri</div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ hr.hr-text::before {
                                 <i class="fas fa-envelope text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Email</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
+                                <div class="small text-black-50"><a href="#!">cosethapun@gmail.com</a></div>
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ hr.hr-text::before {
                                 <i class="fas fa-mobile-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Phone</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">+1 (555) 902-8832</div>
+                                <div class="small text-black-50">+6285735808835</div>
                             </div>
                         </div>
                     </div>

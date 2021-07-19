@@ -14,7 +14,22 @@ left:-8px;
 top:-10px;
 opacity:0.9;
 }
+
+.marker{
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius:50%;
+    cursor:pointer;
+}
+#map {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
 </style>
+        
                 <div class="container-fluid">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
@@ -108,11 +123,23 @@ $(document).ready(function(){
         var result = data.data;
         for (let index = 0; index < result.length; index++) {
             var popup = new mapboxgl.Popup().setHTML(
-                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="lokasi/detail/'+result[index].slug+'" class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-cicle"></i> </a>'
+                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="{{ url("lokasi/detail/")}}'+"/"+result[index].slug+'") class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-circle"></i> </a>'
             );
+                
+            var el = document.createElement('div');
+            if(result[index].kategoris[0].gambar !=null){
+                el.style.backgroundImage = 'url(/' + result[index].kategoris[0].gambar + ')';               
+            }else{
+                el.style.backgroundImage = 'url(/asset/default.png)';          
+            }
+          
+            el.className = 'marker';
+            el.style.width = '40px';
+            el.style.height = '40px';
 
-             new mapboxgl.Marker().setLngLat([result[index].long, result[index].lat])
-            .setPopup(popup).addTo(map);         
+             new mapboxgl.Marker(el).setLngLat([result[index].long, result[index].lat])
+            .setPopup(popup).addTo(map);
+            console.log(result[index].long)
         }
   });
 });

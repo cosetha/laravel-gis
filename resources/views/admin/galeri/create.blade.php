@@ -62,8 +62,7 @@
                                 <button type="submit" class="btn btn-primary mb-2">Tambahkan</button>                                                                                
                             </div>
                                 </form>
-                        </div>
-                      
+                        </div>                      
                 </div>
 @endsection
 

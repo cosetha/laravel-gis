@@ -14,9 +14,34 @@
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
-        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <style>
+            .ui-tooltip {
+            background: #4a4a4a;
+            color: #96f226;
+            border: 2px solid #454545;
+            border-radius: 0px;
+            box-shadow: 0 0
+            }
+            .ui-autocomplete {
+                background: #4a4a4a;
+                border-radius: 0px;
+            }
+            .ui-menu .ui-menu-item {
+                color: #7FFFD4;
+                border-radius: 0px;
+            }
+            .ui-menu .ui-menu-item :hover {
+                background: #656565;
+                color: #96f226
+            }
+            .ui-menu .ui-menu-item :active {
+                box-shadow: 0 0 30px #96f226
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -25,7 +50,7 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <input class="form-control" id="auto-complete" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                     </div>
@@ -55,9 +80,7 @@
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
-                                    </a>
-                                    <a class="dropdown-item" href="#">Settings</a>
-                                    <a class="dropdown-item" href="#">Activity Log</a>
+                                    </a>                                                                        
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -110,23 +133,13 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{ url('dashboard/berita') }}">Berita</a>
-                                            <a class="nav-link" href="{{ url('dashboard/profil') }}">Profil</a>
+                                            <a class="nav-link" href="{{ url('dashboard/berita') }}">Berita</a>                                            
                                             <a class="nav-link" href="{{ url('dashboard/feedback') }}">FeedBack</a>
                                         </nav>
                                     </div>
                                     
                                 </nav>
-                            </div>
-                            <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
+                            </div>                            
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -163,6 +176,37 @@
         <script src="{{ asset('node_modules/tinymce/tinymce.js') }}"></script>
         <script src="{{ asset('js/tinymcs.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.2/dist/sweetalert2.all.min.js"></script>
+        
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+        var source = [ 
+                { value: "{{url('dashboard/lokasi')}}",
+                 label: "Lokasi"
+                },
+                { value: "{{url('dashboard/lokasi')}}",
+                 label: "Kategori Lokasi"
+                },
+                { value: "{{url('dashboard/berita')}}",
+                 label: "Berita"
+                },
+                { value: "{{url('dashboard/galeri')}}",
+                 label: "Galeri"
+                },
+                { value: "{{url('dashboard/feedback')}}",
+                 label: "Feedback"
+                },
+             ];
+        $(document).ready(function() {
+            $("input#auto-complete").autocomplete({
+                source: source,
+                select: function( event, ui ) { 
+                    window.location.href = ui.item.value;
+                    ui.item.value = "";  
+                    return false;
+                }
+            });
+        });
+        </script>
         @yield('js-ajax')
     </body>
 </html>

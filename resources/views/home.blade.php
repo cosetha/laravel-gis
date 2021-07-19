@@ -41,6 +41,12 @@ h4,h5,h6{
 .fa-heart:hover {
     color: red;
 }
+#map {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
 </style>
 <header class="masthead">
             <div class="container d-flex h-100 align-items-center">
@@ -122,12 +128,12 @@ h4,h5,h6{
             @else
                 @foreach($lokasi as $l)
                 <div class="row justify-content-center no-gutters">
-                    <div class="col-lg-6"><img class="img-fluid" src="{{ asset($l->gambar) }}" alt="" /></div>
+                    <div class="col-lg-6"><img class="img-fluid w-100" style="max-height:400px" src="{{ asset($l->gambar) }}" alt="" /></div>
                     <div class="col-lg-6 @if($loop->iteration % 2 ==0 ) order-lg-first @endif">
                         <div class="bg-black text-center h-100 project">
                             <div class="d-flex h-100">
                                 <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <h4 class="text-white">{{ Str::limit($l->nama, 30) }}  <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
+                                    <h4 class="text-white">{{ Str::limit($l->nama, 30) }} @auth  <div class="favorite d-inline">@if($l->favorited()) <a  class="favorite-remove " href="#" data-id="{{$l->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#" data-id="{{$l->id}}"><i  class="far fa-heart"></i> </a> @endif</div> @endauth</h4>
                                     <p class="mb-0 text-white-50">{{ Str::limit($l->lokasi, 30) }}</p>
                                     <hr class="d-none d-lg-block mb-0 mr-0" />
                                     <small class="text-white">{{ $l->kategoris->first()->nama }}</small>
@@ -150,7 +156,7 @@ h4,h5,h6{
                         <h2 class="text-white mb-5">Isi Form untuk FeedBack</h2>
                         <form class="form-inline d-flex" action="{{url('feedback/add')}}" method="post">
                             @csrf
-                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="feedback" name="feedback" type="text" placeholder="Isi Masukan..." />
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="feedback" name="feedback" type="text" placeholder="Isi Masukan..." required />
                             <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0 d-none" id="nama" name="nama" type="hidden" value="{{ Auth::user()->name }}" />
                             <button class="btn btn-primary mx-auto" type="submit">Submit</button>
                         </form>
@@ -172,13 +178,13 @@ h4,h5,h6{
                     </div>
                 </div>
                 <div class="row mt-5 p-4">
-                    <div class="col-md-4 mb-3 mb-md-0">
+                <div class="col-md-4 mb-3 mb-md-0">
                         <div class="card py-4 h-100">
                             <div class="card-body text-center">
                                 <i class="fas fa-map-marked-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Address</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                                <div class="small text-black-50">Jalan Kota Kediri</div>
                             </div>
                         </div>
                     </div>
@@ -188,7 +194,7 @@ h4,h5,h6{
                                 <i class="fas fa-envelope text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Email</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
+                                <div class="small text-black-50"><a href="#!">cosethapun@gmail.com</a></div>
                             </div>
                         </div>
                     </div>
@@ -198,7 +204,7 @@ h4,h5,h6{
                                 <i class="fas fa-mobile-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Phone</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">+1 (555) 902-8832</div>
+                                <div class="small text-black-50">+6285735808835</div>
                             </div>
                         </div>
                     </div>
@@ -235,7 +241,7 @@ $(document).ready(function(){
         var result = data.data;
         for (let index = 0; index < result.length; index++) {
             var popup = new mapboxgl.Popup().setHTML(
-                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="lokasi/detail/'+result[index].slug+'" class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-cicle"></i> </a>'
+                '<h4 class="text-primary p-1">'+result[index].nama+'</h4>'+'<br>'+'<h6 class="text-dark-50 p-1">'+result[index].lokasi+'</h6>'+'<p class="text-dark-50 p-1">'+result[index].kategoris[0].nama+'</p>'+'<br>'+'<a href="{{ url("lokasi/detail/")}}'+"/"+result[index].slug+'") class="text-center btn-warning" style="font-size: 18pt; color:white; text-decoration: none;" class="mr-3">Detail <i class="fas fa-info-circle"></i> </a>'
             );
                 
             var el = document.createElement('div');

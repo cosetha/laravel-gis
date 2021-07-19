@@ -96,8 +96,12 @@ class GaleriController extends Controller
     {
         $galeri = Galeri::where('id',$id)->first();
         $kategori = Lokasi::orderBy('created_at','desc')->get();
+        if($kategori === null){
+            abort (404);
+        }else{
         // print_r($lokasi);
         return view('admin.galeri.edit',['galeri'=>$galeri,'kategori'=>$kategori]);
+        }
     }
 
     /**
@@ -142,7 +146,7 @@ class GaleriController extends Controller
                 $galeri->gambar= $directory."/".$nama;
                 $galeri->save();
                 $galeri->locations()->attach(Lokasi::where('id', $request->lokasi)->first());
-                return redirect('/dashboard/galeri/create')->with(['success' => ' Berhasil menambahkan Galeri ']);
+                return redirect('/dashboard/galeri/create')->with(['success' => ' Berhasil Mengedit Galeri ']);
              }
 
         }else{
@@ -167,7 +171,7 @@ class GaleriController extends Controller
                 $galeri->locations()->detach(Lokasi::where('id', $galeri->lokasi)->first());                    
                 $galeri->save();
                 $galeri->locations()->attach(Lokasi::where('id', $request->lokasi)->first());
-                return redirect('/dashboard/galeri/edit/'.$request->id)->with(['success' => ' Berhasil menambahkan Galeri ']);
+                return redirect('/dashboard/galeri/edit/'.$request->id)->with(['success' => ' Berhasil Mengedit Galeri ']);
              }
         }
     }

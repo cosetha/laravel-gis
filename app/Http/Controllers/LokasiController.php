@@ -105,9 +105,14 @@ class LokasiController extends Controller
     public function show($id)
     {
         $lokasi = Lokasi::where('id',$id)->first();
-        $kategori = Kategori::orderBy('created_at','desc')->get();
-        // print_r($lokasi);
-        return view('admin.lokasi.show',['lokasi'=>$lokasi,'kategori'=>$kategori]);
+        if($lokasi === null){
+            abort (404);
+        }else{
+            $kategori = Kategori::orderBy('created_at','desc')->get();
+            // print_r($lokasi);
+            return view('admin.lokasi.show',['lokasi'=>$lokasi,'kategori'=>$kategori]);
+        }
+        
     }
 
     /**
@@ -119,9 +124,13 @@ class LokasiController extends Controller
     public function edit($id)
     {
         $lokasi = Lokasi::where('id',$id)->first();
+        if($lokasi === null){
+            abort (404);
+        }else{
         $kategori = Kategori::orderBy('created_at','desc')->get();
         // print_r($lokasi);
         return view('admin.lokasi.edit',['lokasi'=>$lokasi,'kategori'=>$kategori]);
+        }
     }
 
     /**

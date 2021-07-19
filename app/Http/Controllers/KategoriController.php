@@ -88,7 +88,11 @@ class KategoriController extends Controller
     public function edit($id)
     {
         $kategori = Kategori::find($id);
+        if($kategori === null){
+            abort (404);
+        }else{
         return view('admin.kategori.edit',['kategori' => $kategori ]);
+        }
     }
 
     /**
@@ -100,6 +104,7 @@ class KategoriController extends Controller
      */
     public function update(Request $request)
     {       
+        $kategori = Kategori::find($request->id);
         if($request->hasFile('gambar')){
             $messsages = array(            
                 'nama.required'=>'Field Nama Perlu di Isi',
@@ -121,8 +126,13 @@ class KategoriController extends Controller
                 $nama = time().$file->getClientOriginalName();
                 $file->name = $nama;
                 $file->move($directory, $file->name);            
-                $image_path = url('/').$kategori->gambar;                 
-                File::Delete($kategori->gambar);
+                $image_path = url('/').$kategori->gambar;  
+                try {
+                    File::Delete($kategori->gambar);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }               
+               
 
                 $kategori = Kategori::find($request->id);
                 $old = $kategori->nama;

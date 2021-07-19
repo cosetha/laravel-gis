@@ -93,8 +93,11 @@ class BeritaController extends Controller
     public function show($id)
     {
         $berita = Berita::where('id',$id)->first();       
-        
+        if($berita === null){
+            abort (404);
+        }else{
         return view('admin.berita.show',['berita'=>$berita]);
+        }
     }
 
     /**
@@ -106,8 +109,11 @@ class BeritaController extends Controller
     public function edit($id)
     {
         $berita = Berita::where('id',$id)->first();       
-        
+        if($berita === null){
+            abort (404);
+        }else{
         return view('admin.berita.edit',['berita'=>$berita]);
+        }
     }
 
     /**

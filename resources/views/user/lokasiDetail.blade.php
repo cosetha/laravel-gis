@@ -19,7 +19,12 @@
         <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" />
         <style>    
-          
+          #map {
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
         </style>
     </head>
 
@@ -85,14 +90,14 @@
         <section class="bg-light projects-section" id="detail">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-md-8">
-                        <h4>{!! $detail[0]->nama !!} <div class="favorite d-inline">@if($detail[0]->favorited()) <a  class="favorite-remove " href="#favorite-remove" data-id="{{$detail[0]->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#add-favorite" data-id="{{$detail[0]->id}}"><i  class="far fa-heart"></i> </a> @endif</div></h4>
+                    <div class="col-lg-5 col-md-5">
+                        <h4>{!! $detail[0]->nama !!} @auth <div class="favorite d-inline">@if($detail[0]->favorited()) <a  class="favorite-remove " href="#favorite-remove" data-id="{{$detail[0]->id}}"><i class="fa fa-heart"></i></a> @else <a class="favorite-add" href="#add-favorite" data-id="{{$detail[0]->id}}"><i  class="far fa-heart"></i> </a> @endif</div> @endauth</h4>
                         <hr>
                         <h5>Lokasi: <span class="badge bg-primary">{!! $detail[0]->lokasi !!} </span></h5>
                         <p>{!! $detail[0]->keterangan !!}</p>
                     </div>
-                    <div class="col-lg-6 col-md-4 w-100">
-                        <div id="map" class="map w-100" style=" height: 400px; " ></div>   
+                    <div class="col-lg-7 col-md-7 w-100">
+                        <div id="map" class="map w-100" style=" height: 700px; " ></div>   
 
                         <div class="card-header text-center my-3"><i class="fas fa-images mr-1"></i>Galleri Foto</div>                    
                         <div class="row d-flex flex-nowrap overflow-auto">
@@ -167,10 +172,11 @@
                         </div>
                     </div>
                 @else
-                    @foreach($lokasi as $l)
+                <div class="card-group d-flex justify-content-center"">
+                    @foreach($lokasi as $l)  
                     <div class="col-6">
                         <div class="card" style="">
-                            <img class="card-img-top" src="{{ asset($l->gambar) }}" alt="{{ asset($l->nama) }}">
+                            <img class="card-img-top" style="max-height:360px" src="{{ asset($l->gambar) }}" alt="{{ asset($l->nama) }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{Str::limit($l->nama, 30)}}</h5>
                                 <p class="card-text">{!! Str::limit($l->keterangan, 60) !!}</p>
@@ -180,6 +186,7 @@
                         </div>
                     </div>
                     @endforeach
+                </div>
                 @endif
                 </div>
             </div>
@@ -195,7 +202,7 @@
                                 <i class="fas fa-map-marked-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Address</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                                <div class="small text-black-50">Jalan Kota Kediri</div>
                             </div>
                         </div>
                     </div>
@@ -205,7 +212,7 @@
                                 <i class="fas fa-envelope text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Email</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
+                                <div class="small text-black-50"><a href="#!">cosethapun@gmail.com</a></div>
                             </div>
                         </div>
                     </div>
@@ -215,7 +222,7 @@
                                 <i class="fas fa-mobile-alt text-primary mb-2"></i>
                                 <h4 class="text-uppercase m-0">Phone</h4>
                                 <hr class="my-4" />
-                                <div class="small text-black-50">+1 (555) 902-8832</div>
+                                <div class="small text-black-50">+6285735808835</div>
                             </div>
                         </div>
                     </div>
@@ -255,7 +262,7 @@
         </script>
 
         <script>
-        
+        var a,b;
         $(document).ready(function(){
         var lat_des = '{{$detail[0]->lat}}';
         var long_des = '{{$detail[0]->long}}';
@@ -271,19 +278,21 @@
         }
         function showPosition(position) {
             $( "#lat_or" ).text(position.coords.latitude) ;
-            $( "#long_or" ).text(position.coords.longitude) ;
-            
+            $( "#long_or" ).text(position.coords.longitude) ;            
         }
 
-            getLocation();
-            console.log(long_des,lat_des)
+            getLocation();           
             setTimeout(function(){ console.log($( "#long_or" ).text(),$( "#lat_or" ).text()) }, 1000);               
        
         mapboxgl.accessToken = 'pk.eyJ1IjoieGlhb2thbmciLCJhIjoiY2lqc2d2NXlyMGhkbHU0bTVtcGNiOWxseCJ9.J5qsX13KKNT1slMGS-MOLg';
-        var map = new mapboxgl.Map({
+       
+        setTimeout(
+        function() 
+        {
+            var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [112.01120512940906, -7.823820147958699],
+            center: [long_des, lat_des],
             zoom: 14.15
         });
         map.on('load', function() {
@@ -291,10 +300,15 @@
             accessToken: mapboxgl.accessToken
         });
         map.addControl(directions, 'top-left');
-
-         directions.setOrigin([$( "#long_or" ).text(),$( "#lat_or" ).text()]);
+        a = $( "#long_or" ).text()
+        b = $( "#lat" ).text()
+        if($( "#long_or" ).text() != ""){
+            directions.setOrigin([$( "#long_or" ).text(),$( "#lat_or" ).text()]);
+        }        
         directions.setDestination([long_des,lat_des]);
         });
+        }, 1000);
+        
         });
         
         </script>       
